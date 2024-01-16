@@ -41,8 +41,6 @@ terraform init
 terraform apply
 docker build -t 
 docker push 
-kubectl apply -f networkpolicy-service-a.yaml
-kubectl apply -f networkpolicy-service-b.yaml
-
-]
+kubectl apply -f policy-btc.yaml
+kubectl apply -f policy-api.yaml
 
