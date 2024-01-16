@@ -1,11 +1,48 @@
-Requests:
+# Kubernetes Cluster Deployment
 
-Create Kubernetes cluster in Azure, AWS or GCP, using Pulumi or Terraform:
-Setup K8s cluster with the latest stable version, with RBAC enabled.
-The Cluster should have 2 services deployed – Service A and Service B:
-    - Service A is a WebServer written in C# or Go that exposes the following:
-        Current value of Bitcoin in USD (updated every 10 seconds taken from an API on the web).
-        Average value over the last 10 minutes.
-    - Service B is a REST API service, which exposes a single controller that responds 200 status code on GET requests.
-Cluster should have NGINX Ingress controller deployed, and corresponding ingress rules for Service A and Service B.
-Service A should not be able to communicate with Service B.
+This project guides you through the process of creating a Kubernetes cluster in Azure, AWS, or GCP using Pulumi or Terraform. The setup includes two services, Service A and Service B, running on a cluster with the latest stable version of Kubernetes and RBAC enabled.
+
+## Requirements
+
+- **Kubernetes Cluster:** Set up a Kubernetes cluster using either Pulumi or Terraform.
+- **Kubernetes Version:** Use the latest stable version.
+- **RBAC:** Role-Based Access Control (RBAC) must be enabled.
+
+## Services Deployment
+
+The cluster should have the following two services deployed:
+
+### Service A
+
+- **Language:** WebServer written in C# or Go.
+- **Functionality:**
+  - Displays the current value of Bitcoin in USD, updated every 10 seconds from an external API.
+  - Shows the average value of Bitcoin over the last 10 minutes.
+
+### Service B
+
+- **Type:** REST API service.
+- **Functionality:**
+  - Exposes a single controller.
+  - Responds with a 200 status code on GET requests.
+
+## Ingress
+
+- **NGINX Ingress Controller:** The cluster should have an NGINX Ingress controller deployed.
+- **Ingress Rules:** Set up corresponding ingress rules for both Service A and Service B.
+
+## Network Policy
+
+- Ensure that Service A is not able to communicate with Service B.
+
+## Getting Started
+
+terraform init
+terraform apply
+docker build -t 
+docker push 
+kubectl apply -f networkpolicy-service-a.yaml
+kubectl apply -f networkpolicy-service-b.yaml
+
+]
+

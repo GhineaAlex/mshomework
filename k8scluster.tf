@@ -1,5 +1,9 @@
 provider "azurerm" {
   features {}
+  subscription_id = var.subscription_id
+  app_id          = var.app_id
+  password        = var.password
+  tenant_id       = var.tenant_id
 }
 
 resource "azurerm_resource_group" "aks_rg" {
