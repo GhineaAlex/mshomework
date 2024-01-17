@@ -8,7 +8,6 @@ import (
 	"time"
 )
 
-// Define a struct to unmarshal the JSON data.
 type CoinGeckoResponse struct {
 	Bitcoin struct {
 		Usd float64 `json:"usd"`
