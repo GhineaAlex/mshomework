@@ -1,6 +1,6 @@
 # Kubernetes Cluster Deployment
 
-This project guides you through the process of creating a Kubernetes cluster in Azure, AWS, or GCP using Pulumi or Terraform. The setup includes two services, Service A and Service B, running on a cluster with the latest stable version of Kubernetes and RBAC enabled.
+The setup includes two services, Service A and Service B, running on a cluster with the latest stable version of Kubernetes and RBAC enabled.
 
 ## Requirements
 
