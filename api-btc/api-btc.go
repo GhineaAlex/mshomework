@@ -43,7 +43,7 @@ func main() {
 	for range ticker.C {
 		price, err := fetchBitcoinPrice()
 		if err != nil {
-			fmt.Println("Error fetching price:", err)
+			fmt.Println("Error fetching: ", err)
 			continue
 		}
 		fmt.Printf("Current Bitcoin Price: USD %f\n", price)
