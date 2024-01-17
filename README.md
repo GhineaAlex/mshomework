@@ -8,10 +8,6 @@ The setup includes two services, Service A and Service B, running on a cluster w
 - **Kubernetes Version:** Use the latest stable version.
 - **RBAC:** Role-Based Access Control (RBAC) must be enabled.
 
-## Services Deployment
-
-The cluster should have the following two services deployed:
-
 ### Service A
 
 - **Language:** WebServer written in C# or Go.
