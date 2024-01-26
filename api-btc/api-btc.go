@@ -3,8 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"io/ioutil"
 	"net/http"
+	"sync"
 	"time"
 )
 
@@ -13,6 +15,12 @@ type CoinGeckoResponse struct {
 		Usd float64 `json:"usd"`
 	} `json:"bitcoin"`
 }
+
+var (
+	mu            sync.RWMutex
+	currentPrice  float64
+	prices        []float64
+)
 
 func fetchBitcoinPrice() (float64, error) {
 	url := "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
@@ -36,7 +44,7 @@ func fetchBitcoinPrice() (float64, error) {
 	return result.Bitcoin.Usd, nil
 }
 
-func main() {
+func updateBitcoinPrice() {
 	ticker := time.NewTicker(10 * time.Second)
 	defer ticker.Stop()
 
@@ -46,6 +54,48 @@ func main() {
 			fmt.Println("Error fetching: ", err)
 			continue
 		}
-		fmt.Printf("Current Bitcoin Price: USD %f\n", price)
+
+		mu.Lock()
+		currentPrice = price
+		prices = append(prices, price)
+		if len(prices) > 60 { 
+			prices = prices[1:]
+		}
+		mu.Unlock()
 	}
+}
+
+func averageBitcoinPrice() float64 {
+	mu.RLock()
+	defer mu.RUnlock()
+
+	sum := 0.0
+	for _, price := range prices {
+		sum += price
+	}
+	if len(prices) == 0 {
+		return 0
+	}
+	return sum / float64(len(prices))
+}
+
+func bitcoinPriceHandler(w http.ResponseWriter, r *http.Request) {
+	mu.RLock()
+	current := currentPrice
+	average := averageBitcoinPrice()
+	mu.RUnlock()
+
+	fmt.Fprintf(w, "Current Bitcoin Price: USD %f\nAverage (10 min): USD %f", current, average)
+}
+
+func main() {
+	go updateBitcoinPrice()
+
+	http.HandleFunc("/", bitcoinPriceHandler)
+
+	fmt.Println("Starting server")
+	err := http.ListenAndServe(":8080", nil)
+    if err != nil {
+        log.Fatal("ListenAndServe: ", err)
+    }
 }
